@@ -2,6 +2,8 @@ from scripts.train import train, validation
 from scripts.preprocess import download_data, preprocess
 from scripts.test import test
 from clearml import Task
+import os
+import pickle
 
 Task.add_requirements("./requirements.txt")
 playground_task: Task = Task.init(
@@ -42,5 +44,10 @@ if __name__ == "__main__":
         train_hyperparameters["seed"],
     )
     roc_auc = validation(model, threshold)
+    os.makedirs("./data/models", exist_ok=True)
+    with open("./data/models/model.pkl", "wb") as f:
+        pickle.dump(model, f)
+    with open("./data/models/threshold.pkl", "wb") as f:
+        pickle.dump(threshold, f)
     print(f"ROC AUC: {roc_auc}")
     submission = test()
