@@ -12,6 +12,7 @@ Task.add_requirements("./requirements.txt")
 playground_task: Task = Task.init(
     project_name="tabular-playground-series-aug-2022",
     task_name=f"experiment-{datetime_now}",
+    task_type=Task.TaskTypes.training,
 )
 logger = playground_task.get_logger()
 
@@ -47,12 +48,14 @@ if __name__ == "__main__":
         train_hyperparameters["seed"],
     )
     roc_auc = validation(model, threshold)
-    playground_task.upload_artifact("Model", model)
-    playground_task.upload_artifact("Threshold", threshold)
+    playground_task.upload_artifact(f"model-{datetime_now}", model)
+    playground_task.upload_artifact(f"threshold-{datetime_now}", threshold)
+    output_model = playground_task._get_output_model()
     os.makedirs("./data/models", exist_ok=True)
     with open("./data/models/model.pkl", "wb") as f:
         pickle.dump(model, f)
     with open("./data/models/threshold.pkl", "wb") as f:
         pickle.dump(threshold, f)
     print(f"ROC AUC: {roc_auc}")
+    output_model.update_and_upload("./data/models/model.pkl")
     submission = test()
