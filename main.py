@@ -3,11 +3,11 @@ from scripts.preprocess import download_data, preprocess
 from scripts.test import test
 from clearml import Task
 
+Task.add_requirements("./requirements.txt")
 playground_task: Task = Task.init(
     project_name="tabular-playground-series-aug-2022",
     task_name="tabular-playground-series-aug-2022",
 )
-playground_task.add_requirements("./requirements.txt")
 logger = playground_task.get_logger()
 
 preprocess_parameters = {
