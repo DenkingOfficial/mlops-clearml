@@ -5,3 +5,4 @@ xgboost
 numpy
 seaborn
 matplotlib
+pyarrow
