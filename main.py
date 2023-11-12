@@ -44,6 +44,8 @@ if __name__ == "__main__":
         train_hyperparameters["seed"],
     )
     roc_auc = validation(model, threshold)
+    playground_task.upload_artifact("Model", model)
+    playground_task.upload_artifact("Threshold", threshold)
     os.makedirs("./data/models", exist_ok=True)
     with open("./data/models/model.pkl", "wb") as f:
         pickle.dump(model, f)
