@@ -4,11 +4,14 @@ from scripts.test import test
 from clearml import Task
 import os
 import pickle
+import time
+
+datetime_now = time.strftime("%Y%m%d-%H%M%S")
 
 Task.add_requirements("./requirements.txt")
 playground_task: Task = Task.init(
     project_name="tabular-playground-series-aug-2022",
-    task_name="tabular-playground-series-aug-2022",
+    task_name=f"experiment-{datetime_now}",
 )
 logger = playground_task.get_logger()
 
